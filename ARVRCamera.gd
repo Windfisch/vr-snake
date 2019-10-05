@@ -1,3 +1,4 @@
+
 extends ARVRCamera
 
 # Declare member variables here. Examples:
@@ -17,8 +18,10 @@ func fix(a):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var pos = self.translation
+	var world = get_parent().get_parent()
+	var pos = world.to_local( self.to_global( Vector3(0,0,-1) ) )
 	pos.y = 0.75
+	#$"../Indicator".translation = get_parent().to_local( world.to_global(pos) )
 	var diff = pos - $"../../SnakeHead".translation
 	
 	var angle = fix(atan2(diff.z, diff.x))
