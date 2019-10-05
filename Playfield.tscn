@@ -1,12 +1,13 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Playfield.gd" type="Script" id=1]
 [ext_resource path="res://SnakeHead.tscn" type="PackedScene" id=2]
 [ext_resource path="res://SnakeTail.tscn" type="PackedScene" id=3]
 [ext_resource path="res://InitOpenVR.gd" type="Script" id=4]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=5]
-[ext_resource path="res://assets/floor/texture-1865722_1920.jpg" type="Texture" id=6]
-[ext_resource path="res://assets/floor/texture-1865722_1920-bump.jpg" type="Texture" id=7]
+[ext_resource path="res://addons/godot-openvr/scenes/ovr_controller.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/floor/texture-1865722_1920.jpg" type="Texture" id=7]
+[ext_resource path="res://assets/floor/texture-1865722_1920-bump.jpg" type="Texture" id=8]
 
 [sub_resource type="Animation" id=1]
 resource_name = "snake move test"
@@ -24,8 +25,17 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 2.01264 ), Vector3( -1.10974, 0, 2.81708 ), Vector3( -7.76811, 0, 2.81708 ), Vector3( -7.76811, 1.11997, -0.231997 ), Vector3( -7.76811, 1.34824, -3.05197 ), Vector3( -9.28702, 1.34824, -5.67599 ), Vector3( -12.6181, 1.34824, -5.67599 ), Vector3( -15.1282, 1.34824, -4.65314 ), Vector3( -16.2499, 1.34824, -1.80798 ), Vector3( -16.2499, 1.34824, 0.514722 ), Vector3( -16.2499, 1.34824, 6.65216 ), Vector3( -13.5542, 1.34824, 6.65216 ) ]
 }
 
+[sub_resource type="SpatialMaterial" id=8]
+flags_unshaded = true
+albedo_color = Color( 1, 0, 1, 1 )
+
+[sub_resource type="SphereMesh" id=9]
+material = SubResource( 8 )
+radius = 0.1
+height = 0.2
+
 [sub_resource type="SpatialMaterial" id=2]
-albedo_texture = ExtResource( 6 )
+albedo_texture = ExtResource( 7 )
 depth_enabled = true
 depth_scale = 0.03
 depth_deep_parallax = true
@@ -33,7 +43,7 @@ depth_min_layers = 8
 depth_max_layers = 32
 depth_flip_tangent = false
 depth_flip_binormal = false
-depth_texture = ExtResource( 7 )
+depth_texture = ExtResource( 8 )
 uv1_scale = Vector3( 10, 10, 10 )
 
 [sub_resource type="QuadMesh" id=3]
@@ -86,6 +96,15 @@ script = ExtResource( 4 )
 
 [node name="ARVRCamera" type="ARVRCamera" parent="ARVROrigin"]
 script = ExtResource( 5 )
+
+[node name="LeftHand" parent="ARVROrigin" instance=ExtResource( 6 )]
+
+[node name="RightHand" parent="ARVROrigin" instance=ExtResource( 6 )]
+controller_id = 2
+
+[node name="Indicator" type="MeshInstance" parent="ARVROrigin"]
+mesh = SubResource( 9 )
+material/0 = null
 
 [node name="Floor" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0 )

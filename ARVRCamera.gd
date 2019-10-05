@@ -19,9 +19,17 @@ func fix(a):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var world = get_parent().get_parent()
-	var pos = world.to_local( self.to_global( Vector3(0,0,-1) ) )
+	
+	
+	var left = $"../LeftHand".translation
+	var right = $"../RightHand".translation
+	var mid = (left+right) / 2
+	var front = ((right-left).cross(Vector3(0,1,0))).normalized()
+	var pos = world.to_local( get_parent().to_global(mid+ 2 * front) )
+	
+	#var pos = world.to_local( self.to_global( Vector3(0,0,-1) ) )
 	pos.y = 0.75
-	#$"../Indicator".translation = get_parent().to_local( world.to_global(pos) )
+	$"../Indicator".translation = get_parent().to_local( world.to_global(pos) )
 	var diff = pos - $"../../SnakeHead".translation
 	
 	var angle = fix(atan2(diff.z, diff.x))
